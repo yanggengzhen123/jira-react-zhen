@@ -3,7 +3,7 @@ import { SearchPanel } from "./search-panel";
 import { useState, useEffect } from "react";
 import qs from "qs";
 import { cleanObject, useDebounce } from "utils";
-import { useMount } from "./../../utils/index";
+import { useMount } from "../../utils/index";
 export const ProjectListScreen = () => {
   // 状态提升
   // 负责人
