@@ -2,7 +2,8 @@ import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import { useState, useEffect } from "react";
 import qs from "qs";
-import { cleanObject } from "utils";
+import { cleanObject, useDebounce } from "utils";
+import { useMount } from "./../../utils/index";
 export const ProjectListScreen = () => {
   // 状态提升
   // 负责人
@@ -11,28 +12,30 @@ export const ProjectListScreen = () => {
     name: "",
     personId: "",
   });
+  // 防抖：把param改造成debouncedParam
+  const debouncedParam = useDebounce(param, 2000);
   // 项目列表
   const [list, setList] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
   useEffect(() => {
     // 获取项目列表
-    fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(param))}`).then(
-      async (response) => {
-        if (response.ok) {
-          setList(await response.json());
-        }
+    fetch(
+      `${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`
+    ).then(async (response) => {
+      if (response.ok) {
+        setList(await response.json());
       }
-    );
-  }, [param]);
+    });
+  }, [debouncedParam]);
   // 获取用户列表
-  useEffect(() => {
+  useMount(() => {
     // 获取项目列表
     fetch(`${apiUrl}/users`).then(async (response) => {
       if (response.ok) {
         setUsers(await response.json());
       }
     });
-  }, []);
+  });
   return (
     <div>
       <SearchPanel
