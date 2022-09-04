@@ -1,18 +1,19 @@
 import { useState } from "react";
 export interface User {
-  id: string
-  name: string
-  email: string
-  title: string
-  organuzation: string
+  id: string;
+  name: string;
+  email: string;
+  title: string;
+  organuzation: string;
+  token: string;
 }
 interface SearchPanelProps {
-  users: User[]
+  users: User[];
   param: {
-    name: string
-    personId: string
-  }
-  setParam: (param: SearchPanelProps['param']) => void
+    name: string;
+    personId: string;
+  };
+  setParam: (param: SearchPanelProps["param"]) => void;
 }
 export const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => {
   return (
