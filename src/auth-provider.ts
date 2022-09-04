@@ -37,6 +37,6 @@ export const register = (data: { username: string; password: string }) => {
     }
   });
 };
-// 登出
+// 登出 加入async返回promise
 export const logout = async () =>
   window.localStorage.removeItem(localStorageKey);
