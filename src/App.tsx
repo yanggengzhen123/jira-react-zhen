@@ -1,3 +1,4 @@
+import "./App.css";
 import React from "react";
 import { useAuth } from "./context/auth-context";
 import { AuthenticatedApp } from "authenticated-app";

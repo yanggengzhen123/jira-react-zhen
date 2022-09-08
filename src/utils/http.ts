@@ -2,7 +2,6 @@
 import qs from "qs";
 import * as auth from "auth-provider";
 import { useAuth } from "../context/auth-context";
-import { useCallback } from "react";
 const apiUrl = process.env.REACT_APP_API_URL;
 // RequestInit 类型来源于fetch
 interface Config extends RequestInit {
