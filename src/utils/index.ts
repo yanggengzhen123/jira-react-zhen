@@ -4,14 +4,14 @@ import { useState } from "react";
 export const isFalsy = (value: unknown) => {
   return value === 0 ? false : !value;
 };
+export const isVoid = (value: unknown) =>
+  value === undefined || value === null || value === "";
 // url参数清空
-export const cleanObject = (object: object) => {
+export const cleanObject = (object: { [key: string]: unknown }) => {
   const result = { ...object };
   Object.keys(object).forEach((key) => {
-    // @ts-ignore
     const value = object[key];
-    if (isFalsy(value)) {
-      // @ts-ignore
+    if (isVoid(value)) {
       delete result[key];
     }
   });

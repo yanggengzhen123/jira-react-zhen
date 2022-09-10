@@ -35,9 +35,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = (form: AuthForm) => auth.login(form).then(setUser);
   const register = (form: AuthForm) => auth.register(form).then(setUser);
   const logout = () => auth.logout().then(() => setUser(null));
-
-  console.log(user);
-
   useMount(() => {
     bootstrapUser().then(setUser);
   });
