@@ -5,10 +5,13 @@ import { cleanObject, useDebounce } from "utils";
 import { useMount } from "../../utils/index";
 import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
+import { Typography } from "antd";
 export const ProjectListScreen = () => {
   // 状态提升
   // 负责人
   const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<null | Error>(null);
   const [param, setParam] = useState({
     name: "",
     personId: "",
@@ -19,8 +22,17 @@ export const ProjectListScreen = () => {
   const [list, setList] = useState([]);
   const client = useHttp();
   useEffect(() => {
+    setIsLoading(true);
     // 获取项目列表
-    client("projects", { data: cleanObject(debouncedParam) }).then(setList);
+    client("projects", { data: cleanObject(debouncedParam) })
+      .then(setList)
+      .catch((err) => {
+        setList([]);
+        setError(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [debouncedParam]);
   // 获取用户列表
   useMount(() => {
@@ -30,12 +42,15 @@ export const ProjectListScreen = () => {
   return (
     <Container>
       <h1>项目列表</h1>
-      {/* <SearchPanel
+      <SearchPanel
         param={param}
         setParam={setParam}
         users={users}
-      ></SearchPanel> */}
-      <List users={users} list={list}></List>
+      ></SearchPanel>
+      {error ? (
+        <Typography.Text type={"danger"}>{error.message}</Typography.Text>
+      ) : null}
+      <List loading={isLoading} users={users} dataSource={list}></List>
     </Container>
   );
 };
