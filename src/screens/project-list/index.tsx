@@ -1,25 +1,21 @@
-import { List, Project } from "./list";
+import { List } from "./list";
 import { SearchPanel } from "./search-panel";
-import { useState, useEffect } from "react";
-import { cleanObject, useDebounce } from "utils";
-import { useMount } from "../../utils/index";
+import { useState } from "react";
+import { useDebounce } from "utils";
 import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
-import { useAsync } from "utils/use-async";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 export const ProjectListScreen = () => {
   // 状态提升
-
   const [param, setParam] = useState({
     name: "",
     personId: "",
   });
   // 防抖：把param改造成debouncedParam
   const debouncedParam = useDebounce(param, 2000);
-  const client = useHttp();
-  // 获取项目列表
+  // 请求获取项目列表
   const { isLoading, error, data: list } = useProjects(debouncedParam);
   // 获取用户列表(负责人)
   const { data: users } = useUsers();

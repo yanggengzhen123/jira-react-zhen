@@ -9,13 +9,20 @@ const defaultInitialState: State<null> = {
   error: null,
   data: null,
 };
+const defaultConfig = {
+  throwOnError: false,
+};
+// run catch return Promise.reject(error) 处理异步获取不到报错的情况
+
 export const useAsync = <D>(
   initialState: State<D> = {
     stat: "idle",
     error: null,
     data: null,
-  }
+  },
+  throwOnError?: typeof defaultConfig
 ) => {
+  const config = { ...defaultConfig, ...throwOnError };
   // 默认值
   const [state, setState] = useState<State<D>>({
     ...defaultInitialState,
@@ -48,7 +55,12 @@ export const useAsync = <D>(
       })
       .catch((error) => {
         setError(error);
-        return error;
+        // return error 这样外界接收不到异常，应该改成Promise.reject(error);
+        if (config.throwOnError) {
+          return Promise.reject(error);
+        } else {
+          return error;
+        }
       });
   };
   return {
