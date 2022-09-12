@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import { Spin, Typography } from "antd";
+import { DevTools } from "jira-dev-tool";
 
 // css计算属性
 export const Row = styled.div<{
@@ -21,3 +23,24 @@ export const Row = styled.div<{
         : undefined};
   }
 `;
+
+// 满屏的loading
+const FullPage = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+export const FullPageLoading = () => (
+  <FullPage>
+    <Spin size={"large"} />
+  </FullPage>
+);
+
+// 请求/me时报错显示的组件
+export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
+  <FullPage>
+    <DevTools />
+    <Typography.Text type={"danger"}>{error?.message}</Typography.Text>
+  </FullPage>
+);
