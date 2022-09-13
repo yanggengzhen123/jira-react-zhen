@@ -1,13 +1,15 @@
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import { useState } from "react";
-import { useDebounce } from "utils";
+import { useDebounce, useDocumentTitle } from "utils";
 import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 export const ProjectListScreen = () => {
+  // 浏览器标题
+  useDocumentTitle("项目列表", false);
   // 状态提升
   const [param, setParam] = useState({
     name: "",
