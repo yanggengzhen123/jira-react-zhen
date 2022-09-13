@@ -51,3 +51,8 @@ export const useDocumentTitle = (title: string, keepOnUmount = true) => {
     };
   }, [keepOnUmount, oldTitle]);
 };
+
+// 重置路由
+export const resetRoute = () => {
+  window.location.href = window.location.origin;
+};

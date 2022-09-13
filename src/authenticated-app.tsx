@@ -7,6 +7,7 @@ import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import { Navigate, Route, Routes } from "react-router";
 import { ProjectScreen } from "screens/project";
 import { BrowserRouter as Router } from "react-router-dom";
+import { resetRoute } from "utils";
 // authenticated-app 已经登录的组件
 export const AuthenticatedApp = () => {
   return (
@@ -20,6 +21,10 @@ export const AuthenticatedApp = () => {
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
             />
+            <Route
+              path="*"
+              element={<Navigate to="/projects" replace={true} />}
+            />
           </Routes>
         </Router>
       </Main>
@@ -31,10 +36,12 @@ const PageHeader = () => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
-        <SoftwareLogo
-          width={"18rem"}
-          color={"rgb(38, 132, 255)"}
-        ></SoftwareLogo>
+        <Button type={"link"} onClick={resetRoute}>
+          <SoftwareLogo
+            width={"18rem"}
+            color={"rgb(38, 132, 255)"}
+          ></SoftwareLogo>
+        </Button>
         <h2>项目</h2>
         <h2>用户</h2>
       </HeaderLeft>
