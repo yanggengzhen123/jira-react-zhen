@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
+import { cleanObject } from "./index";
 
 // 返回页面url中，指定键的参数值（拿到url上的参数，赋值给input）
 export const useUrlQueryParam = <K extends string>(keys: K[]) => {
@@ -15,6 +16,13 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
         }, {} as { [key in K]: string }),
       [searchParams]
     ),
-    setSearchParams,
+    // 为了满足setParam的对象是K中key有的
+    (params: Partial<{ [key in K]: string }>) => {
+      const o = cleanObject({
+        ...Object.fromEntries(searchParams),
+        ...params,
+      }) as URLSearchParamsInit;
+      return setSearchParams(o);
+    },
   ] as const;
 };

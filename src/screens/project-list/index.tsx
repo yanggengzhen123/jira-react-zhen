@@ -12,14 +12,10 @@ export const ProjectListScreen = () => {
   // 浏览器标题
   useDocumentTitle("项目列表", false);
   // 状态提升
-  const [, setParam] = useState({
-    name: "",
-    personId: "",
-  });
   // 重点（基本类型，可以放到依赖里，组件状态可以放到依赖里，非组件状态的对象，绝不可以放到依赖里）
   // const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
   // const [param] = useUrlQueryParam(keys);
-  const [param] = useUrlQueryParam(["name", "personId"]);
+  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
   // 防抖：把param改造成debouncedParam
   const debouncedParam = useDebounce(param, 2000);
   // 请求获取项目列表
