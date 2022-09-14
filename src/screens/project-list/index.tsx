@@ -7,20 +7,24 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
+import { useUrlQueryParam } from "../../utils/url";
 export const ProjectListScreen = () => {
   // 浏览器标题
   useDocumentTitle("项目列表", false);
   // 状态提升
-  const [param, setParam] = useState({
+  const [, setParam] = useState({
     name: "",
     personId: "",
   });
+  const param = useUrlQueryParam(["name", "personId"]);
   // 防抖：把param改造成debouncedParam
   const debouncedParam = useDebounce(param, 2000);
   // 请求获取项目列表
   const { isLoading, error, data: list } = useProjects(debouncedParam);
   // 获取用户列表(负责人)
   const { data: users } = useUsers();
+  // 获取url上的参数
+
   return (
     <Container>
       <h1>项目列表</h1>
