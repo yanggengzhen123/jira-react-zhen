@@ -13,6 +13,7 @@
     "@types/node": "^16.11.56",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@welldone-software/why-did-you-render": "^7.0.1",
     "antd": "^4.23.0",
     "craco-less": "^2.0.0",
     "dayjs": "^1.11.5",
