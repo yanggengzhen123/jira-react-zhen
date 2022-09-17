@@ -17,7 +17,7 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
       [searchParams]
     ),
     // 为了满足setParam的对象是K中key有的
-    (params: Partial<{ [key in K]: string }>) => {
+    (params: Partial<{ [key in K]: unknown }>) => {
       const o = cleanObject({
         ...Object.fromEntries(searchParams),
         ...params,

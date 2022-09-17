@@ -6,7 +6,7 @@ import { User } from "./search-panel";
 export interface Project {
   id: string;
   name: string;
-  personId: string;
+  personId: number;
   pin: boolean;
   organization: string;
   created: number;
@@ -38,8 +38,8 @@ export const List = ({ users, ...props }: ListProps) => {
           render(value, project) {
             return (
               <span>
-                {users.find((user) => user.id === project.personId)?.name ||
-                  "未知"}
+                {users.find((user) => Number(user.id) === project.personId)
+                  ?.name || "未知"}
               </span>
             );
           },
