@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMountedRef } from "./index";
 interface State<D> {
   error: Error | null;
   data: D | null;
@@ -28,9 +29,12 @@ export const useAsync = <D>(
     ...defaultInitialState,
     ...initialState,
   });
+  // 是否是组件卸载状态，如果是卸载状态，则是false，只有在为true的情况下，才能setDate，否则组件卸载的情况下，在promise后setData时会报错
+  const mountedRef = useMountedRef();
   // retry重新刷新一遍，跑一遍run
   // useState直接传入函数的含义是惰性初始化，所以，要用useState保存函数，不能直接传入函数，可以使用useState(() => () => {})避免该问题，或者使用useRef保存该函数
   const [retry, setRetry] = useState(() => () => {}); //如果是() => {}的话,retry的值为void（原因是惰性初始化）,所以是() => () => {}
+
   const setData = (data: D) =>
     setState({
       data,
@@ -61,7 +65,7 @@ export const useAsync = <D>(
     setState({ ...state, stat: "loading" });
     return promise
       .then((data) => {
-        setData(data);
+        if (mountedRef.current) setData(data);
         return data;
       })
       .catch((error) => {
