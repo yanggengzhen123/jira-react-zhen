@@ -15,11 +15,14 @@ export interface Project {
 }
 interface ListProps extends TableProps<Project> {
   users: User[];
+  refresh?: () => void;
 }
 export const List = ({ users, ...props }: ListProps) => {
   const { mutate } = useEditProject();
   // 改造成柯里化函数
-  const pinProject = (id: string) => (pin: boolean) => mutate({ id, pin });
+  const pinProject = (id: string) => (pin: boolean) =>
+    // props.refresh刷新列表
+    mutate({ id, pin }).then(props.refresh);
   return (
     <Table
       // 属性透传

@@ -28,7 +28,9 @@ export const useAsync = <D>(
     ...defaultInitialState,
     ...initialState,
   });
-
+  // retry重新刷新一遍，跑一遍run
+  // useState直接传入函数的含义是惰性初始化，所以，要用useState保存函数，不能直接传入函数，可以使用useState(() => () => {})避免该问题，或者使用useRef保存该函数
+  const [retry, setRetry] = useState(() => () => {}); //如果是() => {}的话,retry的值为void（原因是惰性初始化）,所以是() => () => {}
   const setData = (data: D) =>
     setState({
       data,
@@ -42,10 +44,19 @@ export const useAsync = <D>(
       error,
     });
   // 重要（run是用来触发异步请求的）
-  const run = (promise: Promise<D>) => {
+  const run = (
+    promise: Promise<D>,
+    runConfig?: { retry: () => Promise<D> }
+  ) => {
     if (!promise || !promise.then) {
       throw new Error("请传入promise类型数据");
     }
+    // 保存住promise,再跑一遍run (使用上一次的promise跑一次)
+    setRetry(() => () => {
+      if (runConfig?.retry) {
+        run(runConfig?.retry(), runConfig);
+      }
+    });
     // 初始化
     setState({ ...state, stat: "loading" });
     return promise
@@ -71,6 +82,8 @@ export const useAsync = <D>(
     run,
     setData,
     setError,
+    // retry 被调用时重新跑一遍run,使得state刷新一遍
+    retry,
     ...state,
   };
 };

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useDebounce, useDocumentTitle } from "utils";
 import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useUrlQueryParam } from "../../utils/url";
@@ -20,6 +20,7 @@ export const ProjectListScreen = () => {
     isLoading,
     error,
     data: list,
+    retry,
   } = useProjects(useDebounce(param, 2000));
   // 获取用户列表(负责人)
   const { data: users } = useUsers();
@@ -37,6 +38,7 @@ export const ProjectListScreen = () => {
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
       <List
+        refresh={retry}
         loading={isLoading}
         users={users || []}
         dataSource={list || []}
